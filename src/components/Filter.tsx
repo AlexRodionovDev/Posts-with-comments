@@ -35,34 +35,30 @@ const MenuProps = {
   },
 }
 
+interface User {
+  address: object
+  company: object
+  email: string
+  id: number
+  name: string
+  phone: string
+  username: string
+  website: string
+}
 const MultipleSelect: React.FC = () => {
   const classes = useStyles()
 
-  const [userInfo, setUserInfo] = useState<object[]>([])
+  const [userInfo, setUserInfo] = useState<User[]>([])
   const dispatch = useDispatch()
   useEffect(() => {
     dispatch(fetchUsers())
   }, [])
   const { users, error } = useTypedSelector(state => state.userReducer)
 
-  const handleChange = (
-    event: React.ChangeEvent<{
-      value: [
-        {
-          address: object
-          company: object
-          email: string
-          id: number
-          name: string
-          phone: string
-          username: string
-          website: string
-        },
-      ]
-    }>,
-  ) => {
-    setUserInfo(event.target.value)
-    let usersId = event.target.value.map(user => user.id)
+  const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+    let eventTarget = event.target.value as User[]
+    setUserInfo(eventTarget)
+    let usersId = eventTarget.map(user => user.id)
     let userId = usersId.map(id => `&userId=${id}`).join('')
     dispatch(fetchUserPosts(userId))
   }
@@ -78,7 +74,7 @@ const MultipleSelect: React.FC = () => {
   return (
     <Container>
       <FormControl className={classes.formControl}>
-        <InputLabel id="demo-mutiple-checkbox-label">User</InputLabel>
+        <InputLabel id="demo-mutiple-checkbox-label">Users</InputLabel>
         <Select
           labelId="demo-mutiple-checkbox-label"
           id="demo-mutiple-checkbox"
@@ -86,8 +82,8 @@ const MultipleSelect: React.FC = () => {
           value={userInfo}
           onChange={handleChange}
           input={<Input />}
-          renderValue={(selectedUsers: object[]) =>
-            selectedUsers.map((item: any) => item.name).join(', ')
+          renderValue={(selectedUsers: any) =>
+            selectedUsers.map((item: { name: string }) => item.name).join(', ')
           }
           MenuProps={MenuProps}
         >
