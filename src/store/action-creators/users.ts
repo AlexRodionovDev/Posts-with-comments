@@ -14,7 +14,7 @@ export default function fetchUsers() {
     } catch (e) {
       dispatch({
         type: UsersActionTypes.FETCH_USERS_ERROR,
-        payload: 'Произошла ошибка при загрузке пользователей',
+        payload: 'An error occurred while uploading users',
       })
     }
   }

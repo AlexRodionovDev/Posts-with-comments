@@ -35,6 +35,10 @@ const useStyles = makeStyles(() => ({
   display_none: {
     display: 'none',
   },
+  error: {
+    fontSize: ' 1rem',
+    color: 'red',
+  },
   commentsContainer: {
     backgroundColor: '#fffafa',
   },
@@ -55,7 +59,6 @@ const Post: React.FC<Props> = ({ id, title, body }) => {
       userPost.scrollIntoView()
     }
   }
-
   const setClick = () => {
     setShowComments(false)
   }
@@ -81,17 +84,15 @@ const Post: React.FC<Props> = ({ id, title, body }) => {
         <Button className={classes.hideButton} onClick={setClick}>
           Hide
         </Button>
+        {<Typography className={classes.error}>{error && error}</Typography>}
       </Box>
-      {
-        <Box className={classes.commentsContainer}>
-          {showComments
-            ? comments.map(comment =>
-                id === comment.postId ? <CommentsPost key={comment.id} comment={comment} /> : null,
-              )
-            : null}
-          {error ? <Typography>{error}</Typography> : null}
-        </Box>
-      }
+      <Box className={classes.commentsContainer}>
+        {showComments
+          ? comments.map(comment =>
+              id === comment.postId ? <CommentsPost key={comment.id} comment={comment} /> : null,
+            )
+          : null}
+      </Box>
     </Box>
   )
 }

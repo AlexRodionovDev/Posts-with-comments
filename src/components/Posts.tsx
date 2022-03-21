@@ -10,6 +10,10 @@ const useStyles = makeStyles(() => ({
     fontSize: '1.5rem',
     fontWeight: 500,
   },
+  error: {
+    fontSize: '1.5rem',
+    color: 'red',
+  },
 }))
 
 const UserList: React.FC = () => {
@@ -32,7 +36,9 @@ const UserList: React.FC = () => {
   if (error) {
     return (
       <Container>
-        <Typography component="h1">{error}</Typography>
+        <Typography component="h1" className={classes.error}>
+          {error}
+        </Typography>
       </Container>
     )
   }

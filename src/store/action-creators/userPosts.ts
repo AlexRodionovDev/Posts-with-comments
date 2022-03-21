@@ -6,7 +6,7 @@ export default function fetchUserPosts(userId: string) {
   return async (dispatch: Dispatch<UserPostsAction>) => {
     try {
       dispatch({ type: UserPostActionTypes.FETCH_USER_POSTS })
-      const response = await axios.get(`https://jsonplaceholder.typicode.com/posts${userId}`)
+      const response = await axios.get(`https://jsonplaceholder.typicode.com/posts?${userId}`)
       dispatch({
         type: UserPostActionTypes.FETCH_USER_POSTS_SUCCESS,
         payload: response.data,
@@ -14,7 +14,7 @@ export default function fetchUserPosts(userId: string) {
     } catch (e) {
       dispatch({
         type: UserPostActionTypes.FETCH_USER_POSTS_ERROR,
-        payload: 'An error occurred when uploading users',
+        payload: 'An error occurred when uploading posts',
       })
     }
   }
