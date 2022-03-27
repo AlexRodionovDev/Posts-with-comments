@@ -20,7 +20,6 @@ const UserList: React.FC = () => {
   const { posts, error, loading } = useTypedSelector(state => state.userPostsReducer)
   // const dispatch = useDispatch()
   const [selectedId, setSelectedId] = useState(0)
-  // console.log(posts)
 
   if (loading) {
     return (

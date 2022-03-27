@@ -67,7 +67,6 @@ const Filter: React.FC = () => {
     setUserInfo(targetValue)
     //@ts-ignore
     debouceGetPosts(targetValue)
-    console.log(targetValue)
   }
 
   const getPosts = (targetValue: User[]) => {
