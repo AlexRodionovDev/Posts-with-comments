@@ -27,7 +27,6 @@ const useStyles = makeStyles(() => ({
 
 const CommentsPost: React.FC<Props> = ({ comment }) => {
   const classes = useStyles()
-
   const { loading } = useTypedSelector(state => state.commentsReducer)
 
   if (loading) {
