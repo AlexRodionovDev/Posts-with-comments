@@ -1,14 +1,29 @@
 import React from 'react'
-import { Box } from '@material-ui/core'
-import SimpleSelect from './components/Filter'
+// import { Box } from '@material-ui/core'
+import Filter from './components/Filter'
 import Posts from './components/Posts'
+import { Route, Routes, Router, BrowserRouter } from 'react-router-dom'
 
 function App() {
+  // const { search } = useLocation()
+  // console.log(serch)
+
   return (
-    <Box>
-      <SimpleSelect />
-      <Posts />
-    </Box>
+    <>
+      <BrowserRouter>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <>
+                <Filter />
+                <Posts />
+              </>
+            }
+          />
+        </Routes>
+      </BrowserRouter>
+    </>
   )
 }
 

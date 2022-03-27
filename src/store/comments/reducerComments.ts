@@ -1,4 +1,10 @@
-import { CommentsAction, CommentsState, CommentsActionTypes } from '../../types/commentsTypes'
+import {
+  FetchCommentsRequestAction,
+  FetchCommentsSuccessAction,
+  FetchCommentsErrorAction,
+  CommentsState,
+  CommentsActionTypes,
+} from './typesComments'
 
 const initialState: CommentsState = {
   comments: [],
@@ -6,9 +12,12 @@ const initialState: CommentsState = {
   error: null,
 }
 
-const userReducer = (state = initialState, action: CommentsAction): CommentsState => {
+const userReducer = (
+  state = initialState,
+  action: FetchCommentsRequestAction | FetchCommentsSuccessAction | FetchCommentsErrorAction,
+): CommentsState => {
   switch (action.type) {
-    case CommentsActionTypes.FETCH_COMMENTS:
+    case CommentsActionTypes.FETCH_COMMENTS_REQUEST:
       return { loading: true, error: null, comments: [] }
     case CommentsActionTypes.FETCH_COMMENTS_SUCCESS:
       return { loading: false, error: null, comments: action.payload }

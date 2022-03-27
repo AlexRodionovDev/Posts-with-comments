@@ -1,15 +1,9 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Box, Button, makeStyles, Typography } from '@material-ui/core'
-import fetchComments from '../store/action-creators/comments'
+import fetchComments from '../store/comments/thunkComments'
 import { useTypedSelector } from '../hooks/useTypedSelector'
 import CommentsPost from './Comments'
-
-interface Props {
-  id: any
-  title: string
-  body: string
-}
 
 const useStyles = makeStyles(() => ({
   post: {
@@ -39,28 +33,39 @@ const useStyles = makeStyles(() => ({
     fontSize: ' 1rem',
     color: 'red',
   },
+  loading: {
+    fontSize: ' 1.2rem',
+    textAlign: 'center',
+    lineHeight: '2rem',
+    height: '2rem',
+  },
   commentsContainer: {
     backgroundColor: '#fffafa',
   },
 }))
 
-const Post: React.FC<Props> = ({ id, title, body }) => {
+interface Props {
+  id: any
+  title: string
+  body: string
+  onClick: any
+  selectedId: number | null
+  open: boolean
+}
+
+const Post: React.FC<Props> = ({ id, title, body, onClick, selectedId, open }) => {
   const classes = useStyles()
 
   const { comments, error } = useTypedSelector(state => state.commentsReducer)
-  const [showComments, setShowComments] = useState(false)
   const dispatch = useDispatch()
 
   const getComments = () => {
-    dispatch(fetchComments(id))
-    setShowComments(true)
+    !open && dispatch(fetchComments(id))
     let userPost: HTMLElement | null = document.querySelector(`.userPost${id}`)
     if (userPost) {
       userPost.scrollIntoView()
     }
-  }
-  const setClick = () => {
-    setShowComments(false)
+    onClick(id)
   }
 
   return (
@@ -81,17 +86,14 @@ const Post: React.FC<Props> = ({ id, title, body }) => {
         >
           Expand
         </Button>
-        <Button className={classes.hideButton} onClick={setClick}>
-          Hide
-        </Button>
+
         {<Typography className={classes.error}>{error && error}</Typography>}
       </Box>
       <Box className={classes.commentsContainer}>
-        {showComments
-          ? comments.map(comment =>
-              id === comment.postId ? <CommentsPost key={comment.id} comment={comment} /> : null,
-            )
-          : null}
+        {open && !comments.toString() ? <Box className={classes.loading}>Loading.....</Box> : null}
+        {comments.map(comment =>
+          id === selectedId ? <CommentsPost key={comment.id} comment={comment} /> : error,
+        )}
       </Box>
     </Box>
   )

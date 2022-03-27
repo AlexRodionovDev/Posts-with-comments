@@ -1,8 +1,6 @@
-import React, { useEffect } from 'react'
-import { useDispatch } from 'react-redux'
+import React, { useState } from 'react'
 import { Container, makeStyles, Typography } from '@material-ui/core'
 import { useTypedSelector } from '../hooks/useTypedSelector'
-import fetchUserPosts from '../store/action-creators/userPosts'
 import Post from './Post'
 
 const useStyles = makeStyles(() => ({
@@ -19,12 +17,10 @@ const useStyles = makeStyles(() => ({
 const UserList: React.FC = () => {
   const classes = useStyles()
 
-  const { userPosts, error, loading } = useTypedSelector(state => state.userPostsReducer)
-  const dispatch = useDispatch()
-
-  useEffect(() => {
-    dispatch(fetchUserPosts(''))
-  }, [])
+  const { posts, error, loading } = useTypedSelector(state => state.userPostsReducer)
+  // const dispatch = useDispatch()
+  const [selectedId, setSelectedId] = useState(0)
+  // console.log(posts)
 
   if (loading) {
     return (
@@ -48,8 +44,18 @@ const UserList: React.FC = () => {
       <Typography component="h1" className={classes.title}>
         Posts:
       </Typography>
-      {userPosts.map(post => (
-        <Post key={post.id} id={post.id} title={post.title} body={post.body} />
+      {posts.map(post => (
+        <Post
+          key={post.id}
+          id={post.id}
+          title={post.title}
+          body={post.body}
+          selectedId={selectedId}
+          open={selectedId === post.id}
+          onClick={() => {
+            selectedId === post.id ? setSelectedId(0) : setSelectedId(post.id)
+          }}
+        />
       ))}
     </Container>
   )

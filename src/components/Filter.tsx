@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import Input from '@material-ui/core/Input'
 import InputLabel from '@material-ui/core/InputLabel'
@@ -7,11 +7,14 @@ import FormControl from '@material-ui/core/FormControl'
 import ListItemText from '@material-ui/core/ListItemText'
 import Select from '@material-ui/core/Select'
 import Checkbox from '@material-ui/core/Checkbox'
-import { useDispatch } from 'react-redux'
-import fetchUsers from '../store/action-creators/users'
-import { useTypedSelector } from '../hooks/useTypedSelector'
 import { Container, Typography } from '@material-ui/core'
-import fetchUserPosts from '../store/action-creators/userPosts'
+import { useDispatch } from 'react-redux'
+import fetchUsers from '../store/users/thunkUsers'
+import { useTypedSelector } from '../hooks/useTypedSelector'
+import fetchUserPosts from '../store/posts/thunkPosts'
+import { debounce } from '../helpers/debounce'
+import { useSearchParams } from 'react-router-dom'
+import { User } from '../store/users/typesUsers'
 
 const useStyles = makeStyles(() => ({
   formControl: {
@@ -35,32 +38,60 @@ const MenuProps = {
   },
 }
 
-interface User {
-  address: object
-  company: object
-  email: string
-  id: number
-  name: string
-  phone: string
-  username: string
-  website: string
-}
-const MultipleSelect: React.FC = () => {
+const Filter: React.FC = () => {
   const classes = useStyles()
+
+  const { users, error } = useTypedSelector(state => state.userReducer)
+  const { posts } = useTypedSelector(state => state.userPostsReducer)
+
+  const [searchParams, setSearchParams] = useSearchParams()
+  const postQuery = searchParams.get('user') || ''
 
   const [userInfo, setUserInfo] = useState<User[]>([])
   const dispatch = useDispatch()
+
+  useEffect(() => {
+    !userInfo.toString() && users && getFilteredUsers()
+  }, [posts, users])
+
   useEffect(() => {
     dispatch(fetchUsers())
   }, [])
-  const { users, error } = useTypedSelector(state => state.userReducer)
 
-  const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-    let eventTarget = event.target.value as User[]
-    setUserInfo(eventTarget)
-    let usersId = eventTarget.map(user => user.id)
+  useEffect(() => {
+    dispatch(fetchUserPosts(postQuery))
+  }, [postQuery])
+
+  const setUsersInfo = (event: React.ChangeEvent<{ value: unknown }>) => {
+    let targetValue = event.target.value as User[]
+    setUserInfo(targetValue)
+    //@ts-ignore
+    debouceGetPosts(targetValue)
+    console.log(targetValue)
+  }
+
+  const getPosts = (targetValue: User[]) => {
+    let usersId = targetValue.map(user => user.id)
     let userId = usersId.map(id => `&userId=${id}`).join('')
-    dispatch(fetchUserPosts(userId))
+    setSearchParams({ user: userId })
+  }
+
+  const debouceGetPosts = useCallback(debounce(getPosts, 600), [])
+
+  const getFilteredUsers = () => {
+    let urlPostsId = posts.map(post => post.userId)
+    let uniqueUrlPostsId = urlPostsId.filter((id, pos) => urlPostsId.indexOf(id) === pos)
+
+    let filteredUsers = users.filter(user => {
+      for (let i = 0; i < uniqueUrlPostsId.length; i++) {
+        if (user.id === uniqueUrlPostsId[i]) {
+          return user
+        }
+      }
+    })
+    if (filteredUsers.length !== users.length) {
+      setUserInfo(filteredUsers)
+    }
   }
 
   if (error) {
@@ -80,7 +111,7 @@ const MultipleSelect: React.FC = () => {
           id="demo-mutiple-checkbox"
           multiple
           value={userInfo}
-          onChange={handleChange}
+          onChange={setUsersInfo}
           input={<Input />}
           renderValue={(selectedUsers: any) =>
             selectedUsers.map((item: { name: string }) => item.name).join(', ')
@@ -88,6 +119,7 @@ const MultipleSelect: React.FC = () => {
           MenuProps={MenuProps}
         >
           {users.map(user => (
+            //@ts-ignore
             <MenuItem key={user.id} value={user}>
               <Checkbox checked={userInfo.indexOf(user) > -1} />
               <ListItemText primary={user.name} />
@@ -99,4 +131,4 @@ const MultipleSelect: React.FC = () => {
   )
 }
 
-export default MultipleSelect
+export default Filter
