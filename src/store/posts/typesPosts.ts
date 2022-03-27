@@ -1,6 +1,5 @@
 export interface PostState {
-  posts: Post[] //any убирает ошибку "setSelectedId(post.id)"
-  loading: boolean
+  posts: Post[]
   error: null | string
 }
 

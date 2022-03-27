@@ -17,11 +17,10 @@ const useStyles = makeStyles(() => ({
 const UserList: React.FC = () => {
   const classes = useStyles()
 
-  const { posts, error, loading } = useTypedSelector(state => state.userPostsReducer)
-  // const dispatch = useDispatch()
+  const { posts, error } = useTypedSelector(state => state.userPostsReducer)
   const [selectedId, setSelectedId] = useState(0)
 
-  if (loading) {
+  if (!posts.toString()) {
     return (
       <Container>
         <Typography component="h1">Loading...</Typography>

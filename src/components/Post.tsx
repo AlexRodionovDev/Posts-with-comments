@@ -29,15 +29,18 @@ const useStyles = makeStyles(() => ({
   display_none: {
     display: 'none',
   },
-  error: {
-    fontSize: ' 1rem',
-    color: 'red',
-  },
   loading: {
     fontSize: ' 1.2rem',
     textAlign: 'center',
     lineHeight: '2rem',
     height: '2rem',
+  },
+  error: {
+    fontSize: ' 1.2rem',
+    textAlign: 'center',
+    lineHeight: '2rem',
+    height: '2rem',
+    color: 'red',
   },
   commentsContainer: {
     backgroundColor: '#fffafa',
@@ -86,17 +89,14 @@ const Post: React.FC<Props> = ({ id, title, body, onClick, selectedId, open }) =
         >
           Expand
         </Button>
-
-        {/* {<Typography className={classes.error}>{error && error}</Typography>} */}
       </Box>
       <Box className={classes.commentsContainer}>
         {open && !comments.toString() && !error ? (
           <Box className={classes.loading}>Loading.....</Box>
         ) : null}
-        {/* {open && !comments.toString() && error? <Box className={classes.loading}>Error</Box> : null} */}
-        {open && error ? <Box className={classes.loading}>Error</Box> : null}
+        {open && error ? <Box className={classes.error}>{error}</Box> : null}
         {comments.map(comment =>
-          id === selectedId ? <CommentsPost key={comment.id} comment={comment} /> : error,
+          id === selectedId ? <CommentsPost key={comment.id} comment={comment} /> : null,
         )}
       </Box>
     </Box>

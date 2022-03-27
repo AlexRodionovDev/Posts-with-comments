@@ -15,7 +15,7 @@ export const fetchCommentsSuccess = (comments: Comment[]): FetchCommentsSuccessA
   payload: comments,
 })
 
-export const fetchCommentsError = (comments: Comment[]): FetchCommentsErrorAction => ({
+export const fetchCommentsError = (err: any): FetchCommentsErrorAction => ({
   type: CommentsActionTypes.FETCH_COMMENTS_ERROR,
-  payload: 'Error',
+  payload: `${err.name} loading comments!`,
 })

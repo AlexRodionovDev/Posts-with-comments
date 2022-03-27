@@ -15,7 +15,7 @@ export const fetchPostsSuccess = (posts: Post[]): FetchPostsSuccessAction => ({
   payload: posts,
 })
 
-export const fetchPostsError = (posts: Post[]): FetchPostsErrorAction => ({
+export const fetchPostsError = (err: any): FetchPostsErrorAction => ({
   type: PostsActionTypes.FETCH_POSTS_ERROR,
-  payload: 'Error',
+  payload: `${err.name} loading posts!`,
 })

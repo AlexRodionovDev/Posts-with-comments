@@ -15,7 +15,7 @@ export const fetchUsersSuccess = (user: User[]): FetchUsersSuccessAction => ({
   payload: user,
 })
 
-export const fetchUsersError = (): FetchUsersErrorAction => ({
+export const fetchUsersError = (err: any): FetchUsersErrorAction => ({
   type: UsersActionTypes.FETCH_USERS_ERROR,
-  payload: 'Error',
+  payload: `${err.name} loading users!`,
 })

@@ -11,8 +11,8 @@ export default function fetchComments(userId: string) {
       dispatch(fetchPostsRequest())
       const response = await axios.get(`https://jsonplaceholder.typicode.com/posts?${userId}`)
       dispatch(fetchPostsSuccess(response.data))
-    } catch (e: any) {
-      dispatch(fetchPostsError(e))
+    } catch (err: any) {
+      dispatch(fetchPostsError(err))
     }
   }
 }

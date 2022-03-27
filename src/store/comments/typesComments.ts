@@ -1,6 +1,5 @@
 export interface CommentsState {
   comments: Comment[]
-  loading: boolean
   error: null | string
 }
 

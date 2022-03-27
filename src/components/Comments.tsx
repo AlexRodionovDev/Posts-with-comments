@@ -1,6 +1,5 @@
 import React from 'react'
 import { makeStyles, Box, Typography } from '@material-ui/core'
-import { useTypedSelector } from '../hooks/useTypedSelector'
 
 interface Props {
   comment: any
@@ -27,15 +26,6 @@ const useStyles = makeStyles(() => ({
 
 const CommentsPost: React.FC<Props> = ({ comment }) => {
   const classes = useStyles()
-  const { loading } = useTypedSelector(state => state.commentsReducer)
-
-  if (loading) {
-    return (
-      <Box className={classes.comment}>
-        <Typography className={classes.email}>Loading...</Typography>
-      </Box>
-    )
-  }
 
   return (
     <Box className={classes.comment}>
