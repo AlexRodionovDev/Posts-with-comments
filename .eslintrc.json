@@ -14,7 +14,7 @@
     "ecmaVersion": 2020,
     "sourceType": "module"
   },
-  "plugins": ["react", "prettier", "react-hooks"],
+  "plugins": ["react", "prettier", "react-hooks", "@typescript-eslint"],
   "env": {
     "browser": true,
     "jasmine": true,
@@ -29,7 +29,7 @@
     "jsx-a11y/click-events-have-key-events": "off",
     "jsx-a11y/no-noninteractive-element-interactions": "off",
     "no-console": ["error", { "allow": ["warn", "error"] }],
-    "no-unused-vars": "error",
+    "no-unused-vars": "off",
     "@typescript-eslint/no-unused-vars": "error"
     //    "react-hooks/exhaustive-deps": "warn"
   },

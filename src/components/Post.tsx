@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { useDispatch } from 'react-redux'
 import { Box, Button, makeStyles, Typography } from '@material-ui/core'
 import fetchComments from '../store/comments/thunkComments'
@@ -87,10 +87,14 @@ const Post: React.FC<Props> = ({ id, title, body, onClick, selectedId, open }) =
           Expand
         </Button>
 
-        {<Typography className={classes.error}>{error && error}</Typography>}
+        {/* {<Typography className={classes.error}>{error && error}</Typography>} */}
       </Box>
       <Box className={classes.commentsContainer}>
-        {open && !comments.toString() ? <Box className={classes.loading}>Loading.....</Box> : null}
+        {open && !comments.toString() && !error ? (
+          <Box className={classes.loading}>Loading.....</Box>
+        ) : null}
+        {/* {open && !comments.toString() && error? <Box className={classes.loading}>Error</Box> : null} */}
+        {open && error ? <Box className={classes.loading}>Error</Box> : null}
         {comments.map(comment =>
           id === selectedId ? <CommentsPost key={comment.id} comment={comment} /> : error,
         )}

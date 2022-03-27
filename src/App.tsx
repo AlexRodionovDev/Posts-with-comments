@@ -2,7 +2,7 @@ import React from 'react'
 // import { Box } from '@material-ui/core'
 import Filter from './components/Filter'
 import Posts from './components/Posts'
-import { Route, Routes, Router, BrowserRouter } from 'react-router-dom'
+import { Route, Routes, BrowserRouter } from 'react-router-dom'
 
 function App() {
   // const { search } = useLocation()

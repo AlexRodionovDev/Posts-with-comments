@@ -19,7 +19,7 @@ export default function fetchComments(id: Props) {
   ) => {
     try {
       dispatch(fetchCommentsRequest())
-      const response = await axios.get(`https://jsonplaceholder.typicode.com/posts/${id}/comments`)
+      const response = await axios.get(`https://jsonplaceho lder.typicode.com/posts/${id}/comments`)
       dispatch(fetchCommentsSuccess(response.data))
     } catch (e: any) {
       dispatch(fetchCommentsError(e))
